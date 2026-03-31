@@ -1,1 +1,5 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ZwudzdQk)
+1. https://github.com/DCSS-Programming-Fundamentals-2025-2026/lab-6-mini-chatgpt-b3
+2. Всі тести пройшли (37/37)
+3. ./docs/HowToIntegrate.md
+4. ./docs/MigrationNotes.md
+5. Затверджено
