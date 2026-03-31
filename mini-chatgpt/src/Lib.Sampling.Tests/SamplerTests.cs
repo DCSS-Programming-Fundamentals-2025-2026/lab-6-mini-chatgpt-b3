@@ -30,7 +30,7 @@ namespace Lib.Sampling.Tests
             float[] probs = null;
 
             var ex = Assert.Throws<ArgumentException>(() => _sampler.Sample(probs, 1.0f, 10));
-            Assert.That(ex.Message, Is.EqualTo("Масив ймовірностей є порожнім!"));
+            Assert.That(ex.Message, Does.Contain("Масив ймовірностей є порожнім!"));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Lib.Sampling.Tests
             float[] probs = Array.Empty<float>();
 
             var ex = Assert.Throws<ArgumentException>(() => _sampler.Sample(probs, 1.0f, 10));
-            Assert.That(ex.Message, Is.EqualTo("Масив ймовірностей є порожнім!"));
+            Assert.That(ex.Message, Does.Contain("Масив ймовірностей є порожнім!"));
             Assert.That(probs.Length, Is.EqualTo(0));
         }
 
@@ -97,16 +97,13 @@ namespace Lib.Sampling.Tests
         }
 
         [Test]
-        public void Sample_TemperatureIsZero_ThrowsException()
+        public void Sample_TemperatureIsZero()
         {
-            float[] probs = { 0.5f, 0.5f };
+            float[] probs = { 0.1f, 0.8f, 0.1f };
 
-            void RunWithZeroTemp()
-            {
-                _sampler.Sample(probs, 0f, 10);
-            }
+            int result = _sampler.Sample(probs, 0f, 10);
 
-            Assert.Throws<ArgumentOutOfRangeException>(RunWithZeroTemp);
+            Assert.That(result, Is.EqualTo(1));
         }
 
         [Test]
@@ -155,11 +152,11 @@ namespace Lib.Sampling.Tests
 
             float[] probs1 = { 0.2f, 0.8f };
             _sampler.Sample(probs1, 1.0f, topK);
-            float chanceWithNormalTemp = _fakeMathOps.LastReceivedProbs[1];
+            float chanceWithNormalTemp = _fakeMathOps.LastReceivedProbs[0];
 
             float[] probs2 = { 0.2f, 0.8f };
             _sampler.Sample(probs2, 0.5f, topK);
-            float chanceWithLowTemp = _fakeMathOps.LastReceivedProbs[1];
+            float chanceWithLowTemp = _fakeMathOps.LastReceivedProbs[0];
 
             Assert.That(chanceWithLowTemp, Is.GreaterThan(chanceWithNormalTemp));
         }
@@ -179,8 +176,19 @@ namespace Lib.Sampling.Tests
             return ReturnIndex;
         }
 
+        public int ArgMax(ReadOnlySpan<float> scores)
+        {
+            int maxIndex = 0;
+
+            for (int i = 1; i < scores.Length; i++)
+            {
+                if (scores[i] > scores[maxIndex]) maxIndex = i;
+            }
+
+            return maxIndex;
+        }
+
         public float[] Softmax(ReadOnlySpan<float> logits) => throw new NotImplementedException();
         public float CrossEntropyLoss(ReadOnlySpan<float> logits, int target) => throw new NotImplementedException();
-        public int ArgMax(ReadOnlySpan<float> scores) => throw new NotImplementedException();
     }
 }

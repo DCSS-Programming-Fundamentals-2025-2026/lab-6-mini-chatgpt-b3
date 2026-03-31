@@ -13,7 +13,7 @@
 
         public void Execute(string[] args, CommandExecutionContext context)
         {
-            if (args.Length > 0 && float.TryParse(args[0], out float newTemp) && newTemp > 0)
+            if (args.Length > 0 && float.TryParse(args[0], out float newTemp) && newTemp >= 0)
             {
                 context.Options.Temperature = newTemp;
                 context.PrintMessage("\nЗначення температури оновлено");
@@ -22,7 +22,7 @@
             }
             else
             {
-                context.PrintMessage("Вказано некоректне число (має бути більше за 0)");
+                context.PrintMessage("Вказано некоректне число (має бути 0 або більше)");
             }
         }
     }

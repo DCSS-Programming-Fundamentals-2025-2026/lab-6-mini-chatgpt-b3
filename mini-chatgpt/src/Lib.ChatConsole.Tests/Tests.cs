@@ -186,12 +186,12 @@ namespace Lib.ChatConsole.Tests
         }
 
         [Test]
-        public void TempCommand_Zero_PrintsError()
+        public void TempCommand_Zero_IsValid()
         {
             _registry.TryExecute("/temp 0", _context);
 
-            Assert.That(_options.Temperature, Is.EqualTo(0.5f));
-            Assert.That(_printedMessages[0], Does.Contain("некоректне число"));
+            Assert.That(_options.Temperature, Is.EqualTo(0f));
+            Assert.That(_printedMessages[0], Does.Contain("оновлено"));
         }
     }
 }
